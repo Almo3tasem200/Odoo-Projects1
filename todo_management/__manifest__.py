@@ -9,7 +9,8 @@
         'security/ir.model.access.csv',
         'views/base_menu.xml',
         'views/todo_task_view.xml',
-        'reports/todo_task_report.xml'
+        'reports/todo_task_report.xml',
+        'wizard/change_states_wizard_view.xml',
     ],
     'assets': {
         'web.assets_backend': ['todo_management/static/src/css/task.css'],

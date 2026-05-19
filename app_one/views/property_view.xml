@@ -33,8 +33,8 @@
                                 invisible="not owner_id"/>
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
-                    <widget name="web_ribbon" title="Sold" bg_color="text-bg-success" invisible="state != 'sold'"/>
-                    <widget name="web_ribbon" title="Closed" bg_color="text-bg-dark" invisible="state != 'closed'"/>
+                    <widget name="web_ribbon" title="Sold" bg_color="text-bg-success" invisible="state != 'sold' or not active"/>
+                    <widget name="web_ribbon" title="Closed" bg_color="text-bg-dark" invisible="state != 'closed' or not active"/>
 
                     <header>
                         <button name="action" type="object" class="btn-primary" string="Action"/>

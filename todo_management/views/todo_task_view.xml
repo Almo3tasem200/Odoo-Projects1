@@ -11,7 +11,7 @@
                 <field name="due_date"/>
                 <field name="state"/>
                 <field name="is_late"/>
-<!--                <field name="active" invisible="true"/>-->
+                <field name="active"/>
             </tree>
         </field>
     </record>
@@ -23,11 +23,14 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <widget name="web_ribbon" title="Completed" bg_color="text-bg-success" invisible="state != 'completed' or not active"/>
+                    <widget name="web_ribbon" title="Closed" bg_color="text-bg-dark" invisible="state != 'closed' or not active"/>
                     <header>
                         <button name="action_in_progress" type="object" class="btn-primary btn-sm" string="In Progress ..."
                             invisible="state != 'new'"/>
                         <button name="action_new" type="object" class="btn-secondary btn-sm" string="New"
-                            invisible="state == 'new'"/>
+                            invisible="state in ('new', 'closed')"/>
                         <button name="action_completed" type="object" class="btn-success btn-sm" string="Completed"
                             invisible="state != 'in_progress'"/>
                         <field name="state" widget="statusbar"/>
@@ -35,20 +38,22 @@
                     <div class="oe_title">
                         <label for="name"/>
                         <h1>
-                            <field name="name"/>
+                            <field name="name" readonly="state != 'new'"/>
                         </h1>
                     </div>
                     <group>
                         <group>
-                            <field name="due_date"/>
+                            <field name="created_time" readonly="1"/>
+                            <field name="updated_time" readonly="1"/>
+                            <field name="due_date" readonly="state == 'closed'"/>
                         </group>
                         <group>
-                            <field name="assign_to_id"/>
+                            <field name="assign_to_id" readonly="state == 'closed'"/>
                         </group>
                         <group>
-                            <field name="estimated_time"/>
-                            <field name="active" invisible="true"/>
-                            <field name="is_late" invisible="1"/>
+                            <field name="estimated_time" readonly="state == 'closed'"/>
+                            <field name="active" readonly="state == 'closed'"/>
+                            <field name="is_late" invisible="1" readonly="state == 'closed'"/>
                         </group>
                     </group>
                     <group>
@@ -58,7 +63,7 @@
                     </group>
                     <notebook>
                         <page string="Timesheets">
-                            <field name="timesheet_ids">
+                            <field name="timesheet_ids" readonly="state == 'closed'">
                                 <tree editable="bottom">
                                     <field name="day"/>
                                     <field name="description"/>
@@ -128,6 +133,18 @@
         <field name="active">True</field>
         <!--calling every day 1 time per day
         (-1 means unlimited)-->
+    </record>
+
+    <record id="task_change_states_action" model="ir.actions.server">
+        <field name="name">Change States</field>
+        <field name="model_id" ref="model_todo_task"/>
+        <field name="binding_model_id" ref="model_todo_task"/>
+        <field name="state">code</field>
+        <field name="code">
+            if record:
+                action = record.action_change_states_wizard()
+
+        </field>
     </record>
 
      <menuitem

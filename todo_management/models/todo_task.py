@@ -1,6 +1,10 @@
+from addons.web.controllers import action
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from datetime import timedelta
+
+from odoo.tools.populate import compute
+
 
 class TodoTask(models.Model):
     _name = "todo.task"
@@ -16,7 +20,9 @@ class TodoTask(models.Model):
     total_time = fields.Float(compute="_compute_total_time")
 
     timesheet_ids = fields.One2many('timesheet.line', 'timesheet_id')
-    active = fields.Boolean(default=True)
+
+    created_time = fields.Datetime(default=fields.Datetime.now(), str='Created Time')
+    updated_time = fields.Datetime(str='Updated Time')
 
     state = fields.Selection([
         ("new", "New"),
@@ -24,6 +30,8 @@ class TodoTask(models.Model):
         ("completed", "Completed"),
         ('closed', 'Closed')
     ],default="new")
+
+    active = fields.Boolean(default=True)
 
     def action_in_progress(self):
         for rec in self:
@@ -60,6 +68,16 @@ class TodoTask(models.Model):
                         "Total timesheet hours cannot exceed estimated time"
                     )
 
+    def action_change_states_wizard(self):
+        action = self.env['ir.actions.actions']._for_xml_id('todo_management.change_states_wizard_action')
+        action['context'] = {'default_todo_task_id': self.id}
+        return action
+
+
+    def write(self, vals):
+        vals['updated_time'] = fields.Datetime.now()
+        return super(TodoTask, self).write(vals)
+    # this fn updates time automatic for now when user updates any record
 
 
 class TodoTimesheet(models.Model):
