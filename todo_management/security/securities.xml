@@ -1,0 +1,25 @@
+<odoo>
+    <record id="task_category" model="ir.module.category">
+        <field name="name">ToDo Task</field>
+    </record>
+
+    <record id="task_manager_group" model="res.groups">
+        <field name="name">Task Manager</field>
+        <field name="category_id" ref="todo_management.task_category"/>
+    </record>
+
+    <record id="task_user_group" model="res.groups">
+        <field name="name">Task User</field>
+        <field name="category_id" ref="todo_management.task_category"/>
+    </record>
+
+    <record id="task_record_rule_by_user" model="ir.rule">
+        <field name="name">task.by.user</field>
+        <field name="model_id" ref="todo_management.model_todo_task"/>
+        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+</odoo>

@@ -1,9 +1,9 @@
 @font-face {
 font-family: "BitcountGridDouble";
-src: url(/app_one/static/src/fonts/BitcountGridDouble-Black.ttf)
+src: url(/todo_management/static/src/fonts/BitcountGridDouble-Black.ttf)
 }
 @font-face {
 font-family: "BitcountGridDouble_Roman";
-src: url(/app_one/static/src/fonts/BitcountGridDouble_Roman-ExtraLight.ttf)
+src: url(/todo_management/static/src/fonts/BitcountGridDouble_Roman-ExtraLight.ttf)
 }
 

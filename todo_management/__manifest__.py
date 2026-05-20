@@ -6,6 +6,7 @@
     'depends': ['base', 'mail'
                 ],
     'data': [
+        'security/securities.xml',
         'security/ir.model.access.csv',
         'views/base_menu.xml',
         'views/todo_task_view.xml',

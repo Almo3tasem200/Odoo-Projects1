@@ -21,7 +21,7 @@ class TodoTask(models.Model):
 
     timesheet_ids = fields.One2many('timesheet.line', 'timesheet_id')
 
-    created_time = fields.Datetime(default=fields.Datetime.now(), str='Created Time')
+    created_time = fields.Datetime(default=fields.Datetime.now(), str='Created Time', groups="todo_management.task_manager_group")
     updated_time = fields.Datetime(str='Updated Time')
 
     state = fields.Selection([
@@ -40,6 +40,8 @@ class TodoTask(models.Model):
     def action_completed(self):
         for rec in self:
             rec.state = "completed"
+            rec.is_late = False
+
 
     def action_new(self):
         for rec in self:
