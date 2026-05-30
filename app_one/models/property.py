@@ -3,6 +3,7 @@ from email.policy import default
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from datetime import timedelta
+import requests
 
 
 class Property(models.Model):
@@ -15,7 +16,7 @@ class Property(models.Model):
     description = fields.Text(tracking=True)
     postcode = fields.Char(required=1)
     date_availability = fields.Date(tracking=True)
-    expected_selling_date = fields.Date(required=1, tracking=True)
+    expected_selling_date = fields.Date(tracking=True)
     is_late = fields.Boolean()
     expected_price = fields.Float()
     # digits=(0, 5) 5 numbers after the decimal point
@@ -166,6 +167,17 @@ class Property(models.Model):
         action['views'] = [[view_id, 'form']]
         return action
 
+
+    def get_properties(self):
+        payload = dict()
+        try:
+            response = requests.get('http://localhost:8069/v1/properties', data=payload)
+            if response.status_code == 200:
+                print("success")
+            else:
+                print("fail")
+        except Exception as error:
+            raise ValidationError(str(error))
 
 # CRUD Operation: create, read:search, update:write, delete:unlink
 #     @api.model_create_multi

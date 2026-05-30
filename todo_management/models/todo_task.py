@@ -11,14 +11,18 @@ class TodoTask(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Task"
 
-    name = fields.Char('Task Name', required=True)
+    ref = fields.Char(default='New', readonly=True)
+    name = fields.Char('Task Name', required=True, translate=True)
     assign_to_id = fields.Many2one('res.partner')
-    description = fields.Text('Description')
+    description = fields.Text('Description', translate=True)
     due_date = fields.Date('Due Date')
-    estimated_time = fields.Float(string="Estimated Time in Hours")
+    estimated_time = fields.Float(string="Estimated Time in Hours", required=True)
     is_late = fields.Boolean()
     total_time = fields.Float(compute="_compute_total_time")
 
+    _sql_constraints = [
+        ('unique_name', 'unique(name)', 'This name is already taken! ')
+    ]
     timesheet_ids = fields.One2many('timesheet.line', 'timesheet_id')
 
     created_time = fields.Datetime(default=fields.Datetime.now(), str='Created Time', groups="todo_management.task_manager_group")
@@ -81,6 +85,12 @@ class TodoTask(models.Model):
         return super(TodoTask, self).write(vals)
     # this fn updates time automatic for now when user updates any record
 
+    @api.model
+    def create(self, vals):
+        res = super(TodoTask, self).create(vals)
+        if res.ref == 'New':
+            res.ref = self.env['ir.sequence'].next_by_code('todo_seq')
+        return res
 
 class TodoTimesheet(models.Model):
     _name = "timesheet.line"
