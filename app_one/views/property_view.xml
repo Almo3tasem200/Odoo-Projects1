@@ -4,6 +4,10 @@
         <field name="model">property</field>
         <field name="arch" type="xml">
             <tree class="header_custom" decoration-danger="(is_late)" multi_edit="1">
+                <header>
+                    <button name="property_xlsx_report" type="object" string="Print Excel Report"
+                            class="btn-primary"/>
+                </header>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="is_late" invisible="1"/>
@@ -168,6 +172,18 @@
           name="Properties"
           parent="properties_menu"
           action="property_action"
+    />
+
+    <record id="list_view_action" model="ir.actions.client">
+        <field name="name">Properties List View</field>
+        <field name="tag">app_one.action_list_view</field>
+    </record>
+
+    <menuitem
+          id="property_list_view_menu_item"
+          name="Properties OWL"
+          parent="properties_menu"
+          action="list_view_action"
     />
 </odoo>
 

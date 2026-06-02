@@ -179,6 +179,14 @@ class Property(models.Model):
         except Exception as error:
             raise ValidationError(str(error))
 
+
+    def property_xlsx_report(self):
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'/property/excel/report/{self.env.context.get("active_ids")}',
+            'target': 'new'
+        }
+
 # CRUD Operation: create, read:search, update:write, delete:unlink
 #     @api.model_create_multi
 #     def create(self, vals):
