@@ -9,6 +9,7 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'data/sequence.xml',
+        'data/data.xml',
         'views/base_menu.xml',
         'views/property_view.xml',
         'views/owner_view.xml',
@@ -26,7 +27,10 @@
             'app_one/static/src/css/property.css',
             'app_one/static/src/components/listView/listView.css',
             'app_one/static/src/components/listView/listView.js',
-            'app_one/static/src/components/listView/listView.xml'
+            'app_one/static/src/components/listView/listView.xml',
+            'app_one/static/src/components/formView/formView.css',
+            'app_one/static/src/components/formView/formView.js',
+            'app_one/static/src/components/formView/formView.xml'
         ],
         'web.report_assets_common': ['/app_one/static/src/css/font.css']
     },
